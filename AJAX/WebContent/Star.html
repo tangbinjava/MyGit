@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>二级联动</title>
+	
+    <meta name="keywords" content="keyword1,keyword2,keyword3">
+    <meta name="description" content="this is my page">
+    <meta name="content-type"  charset="UTF-8">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+   	<script type="text/javascript">	
+  		$(document).ready(function(){
+		init();
+	})                                                                                                                         
+		function init(){
+			$('#province').append(
+				$.ajax({
+					type:"Get",
+					url:"StarServlet",
+					dataType:"json",
+					success:function(msg){
+						$('#province').empty().append(
+							"<option value='-1'>DNF全职业</option>"
+						)
+						$.each(msg,function(i){
+							$('#province').append(
+							"<option value='"+$(this).attr('sid')+"'>"+$(this).attr('sname')+"</option>"
+							)
+						})
+					}
+		})
+			);
+		}
+	
+		function change(){
+			var tid = $('#province').val();
+			$.ajax({
+				type:"Get",
+				url:"StarServlet2",
+				data:"tid="+tid,
+				dataType:"json",
+				success:function(msg){
+					$('#city').empty().append(
+						$.each(msg,function(i){
+							$('#city').append(
+								"<option value='"+$(this).attr("tid")+"'>"+$(this).attr("sname")+"</option>"
+							)
+						})
+					)
+				}
+			})
+		}
+  
+	</script>
+  </head>
+  
+  <body>
+		<h2>DNF全职业</h2>
+	<select id="province" onchange="change()">
+	</select>   
+	<select id="city">
+		<option style="display">转职后的职业</option>
+	</select> 
+  </body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>单机ajax</title>
+<script type="text/javascript">
+	var req;
+	function createXMLHttpReqeust() {
+		var request;
+		if (window.XMLHttpRequest) { 
+			request = new XMLHttpRequest();
+		} else if (window.ActiveXObject) { 
+			request = new ActiveXObject("Msxml2.XMLHTTP");
+		}
+		return request;
+	}
+
+	function test() {
+		req = createXMLHttpReqeust();
+		var url = "userName";
+		req.open("get", url);
+		req.onreadystatechange = callback;
+		req.send(null);
+	}
+
+	function callback() {
+
+		if (req.readyState == 4) {
+			if (req.status == 200) {
+				parseMessage();
+			} else {
+				alert("发生错误：");
+			}
+			document.getElementById("onload2").innerHTML = "数据加载完成";
+		} else {
+			document.getElementById("onload2").innerHTML = "数据正在加载";
+		}
+	}
+
+	function parseMessage() {
+
+		document.getElementById("onload2").innerHTML = req.responseText;
+	}
+</script>
+</head>
+<body>
+	 <a href="javascript:void(0);" onclick="test();">测试完整ajax</a>
+	  <div id="onload2"></div>
+</body>
+</html>
